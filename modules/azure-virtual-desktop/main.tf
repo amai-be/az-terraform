@@ -37,13 +37,13 @@ resource "azurerm_virtual_desktop_host_pool" "vdpool" {
     name = join("-", [local.hp_prefix, "avd" ,var.workload ,var.environment])
     friendly_name = var.environment == "prod" ? join(" ", ["Virtual Desktop", upper(var.workload)]) : join(" ", ["Virtual Desktop", upper(var.workload), var.environment])
     validate_environment = false
-    start_vm_on_connect = try(var.start_vm_on_connect, false)
-    type = try(var.type, "Pooled")
+    start_vm_on_connect = var.start_vm_on_connect
+    type = var.type
     load_balancer_type = var.type == "Personal" ? "Persistent" : var.load_balancer_type
-    custom_rdp_properties = try(var.custom_rdp_properties, "drivestoredirect:s:;audiomode:i:0;videoplaybackmode:i:1;redirectclipboard:i:1;redirectprinters:i:1;devicestoredirect:s:*;redirectcomports:i:1;redirectsmartcards:i:0;usbdevicestoredirect:s:*;enablecredsspsupport:i:1;use multimon:i:1;audiocapturemode:i:1")
+    custom_rdp_properties = var.custom_rdp_properties
     description = try(var.description, "This hostpool represents the ${var.workload} workload.")
-    maximum_sessions_allowed = var.type == "Pooled" ? try(var.maximum_sessions_allowed, 8) : null
-    personal_desktop_assignment_type = var.type == "Personal" ? try(var.personal_desktop_assignment_type, "Automatic") : null
+    maximum_sessions_allowed = var.type == "Pooled" ? var.maximum_sessions_allowed : null
+    personal_desktop_assignment_type = var.type == "Personal" ? var.personal_desktop_assignment_type : null
 }
 
 resource "azurerm_virtual_desktop_application_group" "vdag_desktop" {
