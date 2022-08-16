@@ -21,12 +21,12 @@ locals {
 }
 
 resource "azurerm_resource_group" "rg_core" {
-    name = join("-", [locals.rg_prefix, "avd-core" ,var.workload ,var.environment])
+    name = join("-", [local.rg_prefix, "avd-core" ,var.workload ,var.environment])
     location = var.global_settings.location
 }
 
 resource "azurerm_resource_group" "rg_hosts" {
-    name = join("-", [locals.rg_prefix, "avd-hosts" ,var.workload ,var.environment])
+    name = join("-", [local.rg_prefix, "avd-hosts" ,var.workload ,var.environment])
     location = var.global_settings.location
 }
 
@@ -34,7 +34,7 @@ resource "azurerm_virtual_desktop_host_pool" "vdpool" {
     location = var.global_settings.location
     resource_group_name = azurerm_resource_group.rg_core.name
 
-    name = join("-", [locals.hp_prefix, "avd" ,var.workload ,var.environment])
+    name = join("-", [local.hp_prefix, "avd" ,var.workload ,var.environment])
     friendly_name = join(" ", ["Virtual Desktop", upper(var.workload), var.environment == "prod" ? null : var.environment])
     validate_environment = false
     start_vm_on_connect = try(var.start_vm_on_connect, false)
@@ -47,7 +47,7 @@ resource "azurerm_virtual_desktop_host_pool" "vdpool" {
 }
 
 resource "azurerm_virtual_desktop_application_group" "vdag_desktop" {
-  name                = join("-", [locals.ag_prefix, "avd" ,var.workload ,var.environment])
+  name                = join("-", [local.ag_prefix, "avd" ,var.workload ,var.environment])
   location            = var.global_settings.location
   resource_group_name = azurerm_resource_group.rg_core.name
 
@@ -58,7 +58,7 @@ resource "azurerm_virtual_desktop_application_group" "vdag_desktop" {
 }
 
 resource "azurerm_virtual_desktop_workspace" "vdws" {
-  name                = join("-", [locals.ws_prefix, "avd" ,var.workload ,var.environment])
+  name                = join("-", [local.ws_prefix, "avd" ,var.workload ,var.environment])
   location            = var.global_settings.location
   resource_group_name = azurerm_resource_group.rg_core.name
 
