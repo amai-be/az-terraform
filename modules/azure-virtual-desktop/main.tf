@@ -35,7 +35,7 @@ resource "azurerm_virtual_desktop_host_pool" "vdpool" {
     resource_group_name = azurerm_resource_group.rg_core.name
 
     name = join("-", [local.hp_prefix, "avd" ,var.workload ,var.environment])
-    friendly_name = join(" ", ["Virtual Desktop", upper(var.workload), var.environment == "prod" ? null : var.environment])
+    friendly_name = var.environment == "prod" ? join(" ", ["Virtual Desktop", upper(var.workload)]) : join(" ", ["Virtual Desktop", upper(var.workload), var.environment])
     validate_environment = false
     start_vm_on_connect = try(var.start_vm_on_connect, false)
     type = try(var.type, "Pooled")
@@ -53,7 +53,7 @@ resource "azurerm_virtual_desktop_application_group" "vdag_desktop" {
 
   type          = "Desktop"
   host_pool_id  = azurerm_virtual_desktop_host_pool.vdpool.id
-  friendly_name = join(" ", ["Virtual Desktop", upper(var.workload), var.environment == "prod" ? null : var.environment])
+  friendly_name = var.environment == "prod" ? join(" ", ["Virtual Desktop", upper(var.workload)]) : join(" ", ["Virtual Desktop", upper(var.workload), var.environment])
   description   = try(var.description, "This application group represents the ${var.workload} workload.")
 }
 
@@ -62,7 +62,7 @@ resource "azurerm_virtual_desktop_workspace" "vdws" {
   location            = var.global_settings.location
   resource_group_name = azurerm_resource_group.rg_core.name
 
-  friendly_name = join(" ", ["Virtual Desktop", upper(var.workload), var.environment == "prod" ? null : var.environment])
+  friendly_name = var.environment == "prod" ? join(" ", ["Virtual Desktop", upper(var.workload)]) : join(" ", ["Virtual Desktop", upper(var.workload), var.environment])
   description   = try(var.description, "This workspace represents the ${var.workload} workload.")
 }
 
