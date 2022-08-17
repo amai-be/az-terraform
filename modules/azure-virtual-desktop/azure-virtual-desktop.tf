@@ -4,8 +4,8 @@ module "avd-environment" {
 
     global_settings = local.global_settings
 
-    workload = each.value.workload
-    environment = each.value.environment
+    workload = can(each.value.workload) ? each.value.workload : "office"
+    environment = can(each.value.environment) ? each.value.environment : "prod"
     start_vm_on_connect = can(each.value.start_vm_on_connect) ? each.value.start_vm_on_connect : false
     type = can(each.value.type) ? each.value.type : "Pooled"
     load_balancer_type = can(each.value.load_balancer_type) ? each.value.load_balancer_type : "DepthFirst"
