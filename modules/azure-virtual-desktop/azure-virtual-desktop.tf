@@ -1,6 +1,6 @@
 module "avd-environment" {
     source = "./modules/environment"
-    for_each = local.avd.environment
+    for_each = local.avd.environments
 
     global_settings = local.global_settings
 
