@@ -1,17 +1,10 @@
-locals {
-    hp_prefix = "vdpool"
-    ws_prefix = "vdws"
-    ag_prefix = "vdag"
-    rg_prefix = "rg"
-}
-
 resource "azurerm_resource_group" "rg_core" {
-    name = join("-", [local.rg_prefix, "avd-core" ,var.workload ,var.environment])
+    name = join("-", [var.prefix_list.rg_prefix, "avd-core" ,var.workload ,var.environment])
     location = var.global_settings.location
 }
 
 resource "azurerm_resource_group" "rg_hosts" {
-    name = join("-", [local.rg_prefix, "avd-hosts" ,var.workload ,var.environment])
+    name = join("-", [var.prefix_list.rg_prefix, "avd-hosts" ,var.workload ,var.environment])
     location = var.global_settings.location
 }
 
@@ -19,7 +12,7 @@ resource "azurerm_virtual_desktop_host_pool" "vdpool" {
     location = var.global_settings.location
     resource_group_name = azurerm_resource_group.rg_core.name
 
-    name = join("-", [local.hp_prefix, "avd" ,var.workload ,var.environment])
+    name = join("-", [var.prefix_list.hp_prefix, "avd" ,var.workload ,var.environment])
     friendly_name = var.environment == "prod" ? join(" ", ["Virtual Desktop", upper(var.workload)]) : join(" ", ["Virtual Desktop", upper(var.workload), var.environment])
     validate_environment = false
     start_vm_on_connect = var.start_vm_on_connect
@@ -32,7 +25,7 @@ resource "azurerm_virtual_desktop_host_pool" "vdpool" {
 }
 
 resource "azurerm_virtual_desktop_application_group" "vdag_desktop" {
-  name                = join("-", [local.ag_prefix, "avd" ,var.workload ,var.environment])
+  name                = join("-", [var.prefix_list.ag_prefix, "avd" ,var.workload ,var.environment])
   location            = var.global_settings.location
   resource_group_name = azurerm_resource_group.rg_core.name
 
@@ -43,7 +36,7 @@ resource "azurerm_virtual_desktop_application_group" "vdag_desktop" {
 }
 
 resource "azurerm_virtual_desktop_workspace" "vdws" {
-  name                = join("-", [local.ws_prefix, "avd" ,var.workload ,var.environment])
+  name                = join("-", [var.prefix_list.ws_prefix, "avd" ,var.workload ,var.environment])
   location            = var.global_settings.location
   resource_group_name = azurerm_resource_group.rg_core.name
 

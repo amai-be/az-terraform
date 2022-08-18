@@ -3,6 +3,7 @@ module "avd-environment" {
     for_each = local.avd.environments
 
     global_settings = local.global_settings
+    prefix_list = local.prefix_list
 
     workload = can(each.value.workload) ? each.value.workload : "office"
     environment = can(each.value.environment) ? each.value.environment : "prod"
@@ -13,4 +14,14 @@ module "avd-environment" {
     description = can(each.value.description) ? each.value.description : "Test"
     personal_desktop_assignment_type = can(each.value.personal_desktop_assignment_type) ? each.value.personal_desktop_assignment_type : "Automatic"
     maximum_sessions_allowed = can(each.value.maximum_sessions_allowed) ? each.value.maximum_sessions_allowed : 8
+}
+
+module "avd-network" {
+    source = "./modules/network"
+
+    global_settings = local.global_settings
+    prefix_list = local.prefix_list
+
+    address_space = local.network.address_space
+    environments = local.avd.environments
 }

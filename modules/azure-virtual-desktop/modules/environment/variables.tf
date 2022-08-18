@@ -47,3 +47,7 @@ variable "global_settings" {
     location = "westeurope"
   }
 }
+
+variable "prefix_list" {
+  default = {}
+}

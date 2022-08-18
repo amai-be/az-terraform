@@ -1,6 +1,8 @@
 locals {
   global_settings = try(var.global_settings, {})
 
+  prefix_list = try(var.prefix_list, {})
+
   avd = {
     environments = try(var.avd.environments, {})
     maintenance = try(var.avd.maintenance, {})
