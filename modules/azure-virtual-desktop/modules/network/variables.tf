@@ -11,3 +11,7 @@ variable "prefix_list" {
 variable "address_space" {
   default = ""
 }
+
+variable "environments" {
+  default = ""
+}
