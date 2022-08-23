@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "rg_network" {
-    name = join("-", [var.prefix_list.rg_prefix, "avd", "network",var.environment])
+    name = join("-", [var.prefix_list.rg_prefix, "avd", "network", "prod"])
     location = var.global_settings.location
 }
 
