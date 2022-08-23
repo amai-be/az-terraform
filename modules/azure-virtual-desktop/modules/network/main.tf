@@ -18,11 +18,15 @@ resource "azurerm_virtual_network" "avd_spoke_vnet" {
         name = join("-", [var.prefix_list.snet_prefix, "avd", "endpoints"])
         address_prefix = cidrsubnet("${var.address_space}", 4, 1)
     }
+}
 
-    subnet {
-        count = length(var.environments)
+resource "azurerm_subnet" "avd_spoke_subnets" {
+    count = length(var.environments)
 
-        name = join("-", [var.prefix_list.snet_prefix, "avd", element(var.environments, count.index).workload, "hosts"])
-        address_prefix = cidrsubnet("${var.address_space}", 4, count.index + 2)
-    }
+    name = join("-", [var.prefix_list.snet_prefix, "avd", element(var.environments, count.index).workload, "hosts"])
+    
+    resource_group_name  = azurerm_resource_group.rg_network.name
+    virtual_network_name = azurerm_virtual_network.avd_spoke_vnet.name
+
+    address_prefixes = cidrsubnet("${var.address_space}", 4, count.index + 2)
 }
