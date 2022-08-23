@@ -3,7 +3,6 @@ resource "azurerm_resource_group" "rg_network" {
     location = var.global_settings.location
 }
 
-
 resource "azurerm_virtual_network" "avd_spoke_vnet" {
     name = join("-", [var.prefix_list.vnet_prefix, "avd", "core", "001"])
     location = var.global_settings.location

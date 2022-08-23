@@ -22,6 +22,6 @@ module "avd-network" {
     global_settings = local.global_settings
     prefix_list = local.prefix_list
 
-    address_space = local.network.address_space
+    address_space = local.avd.network.address_space
     environments = local.avd.environments
 }
