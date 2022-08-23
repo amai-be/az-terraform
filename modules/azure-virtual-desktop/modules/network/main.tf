@@ -7,7 +7,7 @@ resource "azurerm_virtual_network" "avd_spoke_vnet" {
     name = join("-", [var.prefix_list.vnet_prefix, "avd", "core", "001"])
     location = var.global_settings.location
     resource_group_name = azurerm_resource_group.rg_network.name
-    address_space = var.address_space
+    address_space = [var.address_space]
 
     subnet{
         name = join("-", [var.prefix_list.snet_prefix, "avd", "infrastructure"])
