@@ -28,5 +28,5 @@ resource "azurerm_subnet" "avd_spoke_subnets" {
     resource_group_name  = azurerm_resource_group.rg_network.name
     virtual_network_name = azurerm_virtual_network.avd_spoke_vnet.name
 
-    address_prefixes = cidrsubnet("${var.address_space}", 4, count.index + 2)
+    address_prefixes = [cidrsubnet("${var.address_space}", 4, count.index + 2)]
 }
